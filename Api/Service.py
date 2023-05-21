@@ -1,4 +1,5 @@
 INF= 10**7
+
 def ParseData(lst:list):
     edges =[]
     adj_matrix=[]

@@ -12,8 +12,6 @@ def initialise(graph):
 				Next[i][j] = -1
 			else:
 				Next[i][j] = j
-	for row in dis:
-		print(row)
 
 def constructPath(u, v):
 	u-=1
@@ -49,18 +47,23 @@ def floydWarshall(V):
 					Next[i][j] = Next[i][k]
 
 def get_result(graph, start, end):
-
 	initialise(graph)
 
 	floydWarshall(len(graph))
 	
 	path = constructPath(start, end)
 	
+	arr_dist = [[0 for i in range(len(graph))] for i in range(len(graph))]
+	for i in range(len(graph)):
+		for j in range(len(graph)):
+			arr_dist[i][j]=get_price(i+1,j+1)
 	
 	return {
 		'path':getPath(path),
-        'price':get_price(start,end)
+        'price':get_price(start,end),
+        'dis':arr_dist
 	}
+
 
 
 

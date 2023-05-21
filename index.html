@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.24.0/cytoscape.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="script.js" defer></script>
 </head>
 
 <body>
@@ -25,129 +27,9 @@
 
 
     <div id="cy"></div>
-    <style>
-        #cy {
-            margin: 0 auto;
-            width: 1920px;
-            height: 500px;
-            display: block;
-            background-color: blue;
-        }
+    <table id="table"></table>
+    <h4 id ='result'></h4>
 
-        * {
-            margin: 0;
-        }
-    </style>
-
-    <script>
-        async function Draw() {
-            let from = document.getElementsByName('from')[0].value
-            let to = document.getElementsByName('to')[0].value
-            let response = await fetch('http://127.0.0.1:8000/floyd', {
-                method: 'POST',
-                body: JSON.stringify({'lst':JSON.parse(localStorage.getItem('elements')), 'from':from,'to':to}),
-                headers: {"Content-type":"application/json;charset"}
-            })
-            let data = await response.json();
-            console.log(data)
-            let path = data.path
-            ribs =[]
-            for (let i = 0; i < path.length - 1; i++) {
-                ribs.push('n' +path[i] + '-'+'n'+path[i+1]);
-            }
-            for (var i = 0; i < ribs.length; i++) {
-                cy.$('#' + ribs[i]).select();
-            }
-            for (var i = 0; i < path.length; i++) {
-                cy.$('#n' + path[i]).select();
-            }
-        }
-
-        function Restore() {
-            let elements = localStorage.getItem('elements') ? JSON.parse(localStorage.getItem('elements')) : []
-            cy.add(elements)
-
-        }
-        function RemoveV() {
-            let number = document.getElementsByName('rmv')[0].value
-            let a = cy.$id(`n${number}`)
-            cy.remove(a)
-
-        }
-        function getRandom(min, max) {
-            return Math.floor(Math.random() * (max - min) + min);
-        }
-        var i = 0;
-        let Clear = () => {
-            location.reload()
-            localStorage.removeItem('elements')
-        }
-        let AddVertex = () => {
-            console.log()
-            length = document.getElementsByName('length')[0].value
-            v1 = document.getElementsByName('v1')[0].value
-            v2 = document.getElementsByName('v2')[0].value
-            let elements = localStorage.getItem('elements') ? JSON.parse(localStorage.getItem('elements')) : []
-            node1 = { group: 'nodes', data: { id: `n${v1}` }, position: { x: getRandom(20, 1500), y: getRandom(20, 500) } }
-            node2 = { group: 'nodes', data: { id: `n${v2}` }, position: { x: getRandom(20, 1500), y: getRandom(20, 500) } }
-            edge = { group: 'edges', data: { id: `n${v1}-n${v2}`, source: `n${v1}`, target: `n${v2}`, label: length } }
-            elements.push(node1)
-            elements.push(node2)
-            elements.push(edge)
-            localStorage.setItem('elements', JSON.stringify(elements))
-            cy.add(elements)
-
-        }
-        let cy = cytoscape({
-            container: document.getElementById('cy'),
-
-            style: cytoscape.stylesheet()
-                .selector('edge')
-                .css({
-                    'width': 5,
-                    'line-color': '#369',
-                    'target-arrow-color': 'red',
-                    'target-arrow-shape': 'triangle',
-                    'target-arrow-fill': 'filled',
-                    'arrow-scale':2,
-                    'label': 'data(label)',
-                    'font-size': '20px',
-                    'curve-style': 'bezier',
-                    'color': '#777'
-                })
-                .selector('node')
-                .css({
-                    'content': 'data(id)',
-                    'text-valign': 'center',
-                    'color': 'white',
-                    'text-outline-width': 2,
-                    'text-outline-color': '#888',
-                    'background-color': '#888',
-                })
-                .selector(':selected')
-                .css({
-                    'background-color': 'yellow',
-                    'line-color': 'yellow',
-                    'target-arrow-color': 'YELLOW',
-                    'source-arrow-color': 'black',
-                    'text-outline-color': 'black'
-                }),
-
-            layout: {
-                name: 'grid',
-                rows: 1
-            }
-
-        });
-
-        cy.on('click', 'node', function (evt) {
-            var node = evt.target;
-            console.clear()
-            console.log(node.position());
-        });
-
-
-    </script>
 </body>
 
 </html>

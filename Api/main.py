@@ -4,6 +4,7 @@ import uvicorn
 from typing import Dict, Any
 from fastapi.middleware.cors import CORSMiddleware
 from Service import ParseData
+import time
 app=FastAPI()
 
 app.add_middleware(
