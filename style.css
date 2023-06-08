@@ -9,12 +9,17 @@
 * {
     margin: 0;
 }
+
 table th {
     border: 1px solid #dddddd;
 }
+
 table td {
     border: 1px solid #dddddd;
 }
-table tr:hover{
-    background-color: aqua;
+
+.floyd {
+    background-color: Red;
+    border: none;
+    color: white;
 }

@@ -13,23 +13,17 @@
 <body>
     <input name="v1" type="text" style="width: 100px;" placeholder="вершина 1" />
     <input name="v2" type="text" style="width: 100px;" placeholder="вершина 2" />
-
     <input name="length" type="text" style="width: 50px;" placeholder="вес" />
     <button onclick=AddVertex()> Добавить вершину </button>
     <button onclick=Clear()> Сбросить все вершины </button>
-
-    <input name="rmv" type="text" style="width: 150px;" placeholder="удаляемая вершина" />
-    <button onclick=RemoveV()> Удалить вершину </button>
+    <button class="floyd" onclick=DrawTable()> Алгоритм Флойда</button>
     <button onclick=Restore()> Восстановить вершины </button>
     <button onclick=Draw()> Посмотреть маршрут</button>
     <input name="from" type="text" style="width: 50px;" placeholder="От" />
     <input name="to" type="text" style="width: 50px;" placeholder="До" />
-
-
     <div id="cy"></div>
     <table id="table"></table>
-    <h4 id ='result'></h4>
-
+    <h4 id='result'></h4>
 </body>
 
 </html>

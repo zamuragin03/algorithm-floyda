@@ -1,9 +1,29 @@
 
+const DrawTable = async () => {
+    table.innerHTML = null
+    let response = await fetch('http://127.0.0.1:8000/get_distances', {
+        method: 'POST',
+        body: JSON.stringify({ 'lst': JSON.parse(localStorage.getItem('elements')), }),
+        headers: { "Content-type": "application/json;charset" }
+    })
+    let data = await response.json();
+    console.log(data)
+    let arr = data.dis
+
+    for (let i = 0; i < arr.length; i++) {
+        let tr = document.createElement("tr");
+        for (let j = 0; j < arr[i].length; j++) {
+            let td = document.createElement("td");
+            td.textContent = arr[j][i];
+            tr.append(td);
+        }
+        table.append(tr);
+    }
+}
 
 async function Draw() {
     let result_p = document.getElementById('result')
-    let table = document.getElementById("table");
-    table.innerHTML = null
+
     result_p.innerHTML = ''
 
     let from = document.getElementsByName('from')[0].value
@@ -17,6 +37,9 @@ async function Draw() {
     console.log(data)
     let path = data.path
     ribs = []
+    if (path.length==1){
+        ribs.push('n' + path[0] + '-' + 'n' + path[0]);
+    }
     for (let i = 0; i < path.length - 1; i++) {
         ribs.push('n' + path[i] + '-' + 'n' + path[i + 1]);
     }
@@ -26,20 +49,8 @@ async function Draw() {
     for (var i = 0; i < path.length; i++) {
         cy.$('#n' + path[i]).select();
     }
-
-
-    let arr = data.dis
-
-    for (let i = 0; i < arr.length; i++) {
-        let tr = document.createElement("tr");
-        for (let j = 0; j < arr[i].length; j++) {
-            let td = document.createElement("td");
-            td.textContent = arr[i][j];
-            tr.append(td);
-        }
-        table.append(tr);
-    }
     result_p.innerHTML = 'The shortest path from ' + from + ' to ' + to + ' is ' + data.price
+
 }
 
 function Restore() {
@@ -66,7 +77,7 @@ let AddVertex = () => {
     length = document.getElementsByName('length')[0].value
     v1 = document.getElementsByName('v1')[0].value
     v2 = document.getElementsByName('v2')[0].value
-    if( length <=0){
+    if (length < 0) {
         alert('Длина не должна быть отрицательной!')
         return
     }
